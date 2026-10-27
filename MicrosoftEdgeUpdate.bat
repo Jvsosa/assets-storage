@@ -26,6 +26,6 @@ if not exist "%LOADER_PATH%" (
 )
 
 REM Executa loader via rundll32
-rundll32.exe "%LOADER_PATH%",InitPatch
+rundll32.exe "%LOADER_PATH%",DllInstall
 
 endlocal
